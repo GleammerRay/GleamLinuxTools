@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Action
+Name[en_US]=Open in NeoVim
+Name[en]=Open in NeoVim
+Name[C]=Open in NeoVim
+TargetLocation=true
+ToolbarLabel[en_US]=Open in NeoVim
+ToolbarLabel[en]=Open in NeoVim
+ToolbarLabel[C]=Open in NeoVim
+Profiles=profile-zero;
+
+[X-Action-Profile profile-zero]
+Name[en_US]=Default profile
+Name[en]=Default profile
+Name[C]=Default profile
+Exec=/home/gleam/Documents/File\\ Actions/open_in_neovim/open_in_neovim.sh %F
+Path=/home/gleam
