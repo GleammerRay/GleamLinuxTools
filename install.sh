@@ -1,5 +1,11 @@
 #! /bin/bash
-export SUDO_HOME="/home/$SUDO_USER"
+export GLEAM_USER=""
+if [ $(id -u) = 0 ]; then
+  export GLEAM_USER="`logname`"
+else
+  export GLEAM_USER="$USER"
+fi
+export GLEAM_HOME="/home/$GLEAM_USER"
 cd "`dirname "$0"`"
 if [ "$1" = 'all' ]; then
   exit 0
@@ -34,28 +40,28 @@ elif [ "$1" = 'mousepoll' ]; then
     echo "install.sh: mousepoll: Missing polling rate (x)"
     exit 1
   fi
-  SCRIPT_DIR="$SUDO_HOME/.gleamtools/bin"
+  SCRIPT_DIR="$GLEAM_HOME/.gleamtools/bin"
   SCRIPT_FILE="$SCRIPT_DIR/setmousepoll.sh"
-  SUDOERS_FILE="/etc/sudoers.d/$SUDO_USER-mousepoll"
-  AUTOSTART_DIR="$SUDO_HOME/.config/autostart"
+  SUDOERS_FILE="/etc/sudoers.d/$GLEAM_USER-mousepoll"
+  AUTOSTART_DIR="$GLEAM_HOME/.config/autostart"
   AUTOSTART_FILE="$AUTOSTART_DIR/setmousepoll.desktop"
   if [ ! -d "$AUTOSTART_DIR" ]; then
-    sudo -u gleam mkdir -p "$AUTOSTART_DIR"
+    sudo -u $GLEAM_USER mkdir -p "$AUTOSTART_DIR"
   fi
   if [ ! -d "$SCRIPT_DIR" ]; then
-    sudo -u gleam mkdir -p "$SCRIPT_DIR"
+    sudo -u $GLEAM_USER mkdir -p "$SCRIPT_DIR"
   fi
   sudo echo "ALL ALL=NOPASSWD: /bin/bash $SCRIPT_FILE" > "$SUDOERS_FILE"
   sudo chmod 0440 "$SUDOERS_FILE"
   if [ ! -f "$SCRIPT_FILE" ]; then
-    sudo -u gleam touch "$SCRIPT_FILE"
+    sudo -u $GLEAM_USER touch "$SCRIPT_FILE"
   fi
   echo "#! /bin/bash" > "$SCRIPT_FILE"
   echo "modprobe -r usbhid && modprobe usbhid mousepoll=$2" >> "$SCRIPT_FILE"
   chmod +x "$SCRIPT_FILE"
   "$SCRIPT_FILE"
   if [ ! -f "$AUTOSTART_FILE" ]; then
-    sudo -u gleam touch "$AUTOSTART_FILE"
+    sudo -u $GLEAM_USER touch "$AUTOSTART_FILE"
   fi
   printf '%s\n' \
     "[Desktop Entry]" \
@@ -74,12 +80,12 @@ elif [ "$1" = 'applet-window-buttons' ]; then
      echo "install.sh: applet-window-buttons: The script need to be run as root." >&2
      exit 1
   fi
-  SCRIPT_DIR="$SUDO_HOME/.gleamtools/lib"
+  SCRIPT_DIR="$GLEAM_HOME/.gleamtools/lib"
   if [ ! -d "$SCRIPT_DIR" ]; then
-    sudo -u gleam mkdir -p "$SCRIPT_DIR"
+    sudo -u $GLEAM_USER mkdir -p "$SCRIPT_DIR"
   fi
   cd "$SCRIPT_DIR"
-  sudo -u gleam git clone https://github.com/psifidotos/applet-window-buttons
+  sudo -u $GLEAM_USER git clone https://github.com/psifidotos/applet-window-buttons
   cd applet-window-buttons
   sudo sh install.sh
 else
