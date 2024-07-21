@@ -87,6 +87,9 @@ elif [ "$1" = 'applet-window-buttons' ]; then
   fi
   cd "$GLEAM_TOOLS_LIB"
   sudo -u $GLEAM_USER git clone https://github.com/psifidotos/applet-window-buttons
+  if [ -d ./applet-window-buttons ]; then
+    rm -rf applet-window-buttons
+  fi
   cd applet-window-buttons
   sudo sh install.sh
 else
