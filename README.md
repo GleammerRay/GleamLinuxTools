@@ -38,6 +38,16 @@ sudo ./install.sh applet-window-buttons
 
 https://github.com/psifidotos/applet-window-buttons
 
+## Grayscale
+
+May require a logout or toggling the effect off and on again in system settings after installation.
+
+```sh
+sudo ./install.sh kwin-grayscale
+```
+
+https://github.com/murat-cileli/kwin-grayscale-effect
+
 ## Yet Another Magic Lamp
 
 https://github.com/zzag/kwin-effects-yet-another-magic-lamp

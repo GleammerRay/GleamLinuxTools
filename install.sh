@@ -92,6 +92,23 @@ elif [ "$1" = 'applet-window-buttons' ]; then
   fi
   cd applet-window-buttons
   sudo sh install.sh
+elif [ "$1" = 'kwin-grayscale' ]; then
+  if ! [ $(id -u) = 0 ]; then
+     echo "install.sh: kwin-grayscale: The script need to be run as root." >&2
+     exit 1
+  fi
+  cd "$GLEAM_TOOLS_LIB"
+  if [ -d ./kwin-grayscale-effect ]; then
+    rm -rf kwin-grayscale-effect
+  fi
+  sudo -u $GLEAM_USER git clone https://github.com/murat-cileli/kwin-grayscale-effect
+  cd kwin-grayscale-effect
+  sudo cp -r kwin4_effect_grayscale /usr/share/kwin/effects/
+  sudo cp kwin4_effect_grayscale/metadata.json /usr/share/kservices5/kwin/
+  IS_IN_FILE=$(cat "$GLEAM_HOME/.config/kwinrc" | grep -c "kwin4_effect_grayscaleEnabled=true")
+  if [ $IS_IN_FILE -eq 0 ]; then
+    sed -i '/Plugins/a kwin4_effect_grayscaleEnabled=true' "$GLEAM_HOME/.config/kwinrc"
+  fi
 else
   echo "install.sh: Unknown command: $@"
   exit 1
