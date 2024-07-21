@@ -6,6 +6,9 @@ else
   export GLEAM_USER="$USER"
 fi
 export GLEAM_HOME="/home/$GLEAM_USER"
+export GLEAM_TOOLS="$GLEAM_HOME/.gleamtools"
+export GLEAM_TOOLS_BIN="$GLEAM_TOOLS/bin"
+export GLEAM_TOOLS_LIB="$GLEAM_TOOLS/lib"
 cd "`dirname "$0"`"
 if [ "$1" = 'all' ]; then
   exit 0
@@ -40,16 +43,15 @@ elif [ "$1" = 'mousepoll' ]; then
     echo "install.sh: mousepoll: Missing polling rate (x)"
     exit 1
   fi
-  SCRIPT_DIR="$GLEAM_HOME/.gleamtools/bin"
-  SCRIPT_FILE="$SCRIPT_DIR/setmousepoll.sh"
+  SCRIPT_FILE="$GLEAM_TOOLS_BIN/setmousepoll.sh"
   SUDOERS_FILE="/etc/sudoers.d/$GLEAM_USER-mousepoll"
   AUTOSTART_DIR="$GLEAM_HOME/.config/autostart"
   AUTOSTART_FILE="$AUTOSTART_DIR/setmousepoll.desktop"
   if [ ! -d "$AUTOSTART_DIR" ]; then
     sudo -u $GLEAM_USER mkdir -p "$AUTOSTART_DIR"
   fi
-  if [ ! -d "$SCRIPT_DIR" ]; then
-    sudo -u $GLEAM_USER mkdir -p "$SCRIPT_DIR"
+  if [ ! -d "$GLEAM_TOOLS_BIN" ]; then
+    sudo -u $GLEAM_USER mkdir -p "$GLEAM_TOOLS_BIN"
   fi
   sudo echo "ALL ALL=NOPASSWD: /bin/bash $SCRIPT_FILE" > "$SUDOERS_FILE"
   sudo chmod 0440 "$SUDOERS_FILE"
@@ -80,11 +82,10 @@ elif [ "$1" = 'applet-window-buttons' ]; then
      echo "install.sh: applet-window-buttons: The script need to be run as root." >&2
      exit 1
   fi
-  SCRIPT_DIR="$GLEAM_HOME/.gleamtools/lib"
-  if [ ! -d "$SCRIPT_DIR" ]; then
-    sudo -u $GLEAM_USER mkdir -p "$SCRIPT_DIR"
+  if [ ! -d "$GLEAM_TOOLS_LIB" ]; then
+    sudo -u $GLEAM_USER mkdir -p "$GLEAM_TOOLS_LIB"
   fi
-  cd "$SCRIPT_DIR"
+  cd "$GLEAM_TOOLS_LIB"
   sudo -u $GLEAM_USER git clone https://github.com/psifidotos/applet-window-buttons
   cd applet-window-buttons
   sudo sh install.sh
