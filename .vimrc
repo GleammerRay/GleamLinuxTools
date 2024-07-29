@@ -1,11 +1,18 @@
 set rnu
 set scrolloff=9999
 
+" Install vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall
 endif
+
+" Automatically install missing plugs
+autocmd VimEnter *
+  \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \|   PlugInstall --sync | q
+  \| endif
 
 " Plugs
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
@@ -21,6 +28,10 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'echasnovski/mini.nvim'
 Plug 'echasnovski/mini.animate'
 Plug 'voldikss/vim-floaterm'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'luckasRanarison/nvim-devdocs'
 " Themes
 Plug 'GGalizzi/cake-vim' " cake - Gleam's favourite light theme
 Plug 'vim-scripts/billw.vim' " billw - Gleam's favourite dark theme
@@ -168,3 +179,6 @@ nmap <C-w>8 :FloatermToggle float8<CR>
 nmap <C-w>7 :FloatermToggle float7<CR>
 nmap <C-w>6 :FloatermToggle float6<CR>
 tnoremap <C-w> <C-\><C-n>:FloatermHide!<CR>
+
+" Devdocs
+lua require('nvim-devdocs').setup()
