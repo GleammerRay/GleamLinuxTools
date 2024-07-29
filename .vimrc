@@ -102,6 +102,7 @@ function! s:OnEnter()
     execute "cd!" parent
   endif
   wincmd l
+  " Floaterm
   FloatermNew --title=Floaterm\ 0 --name=float0
   FloatermNew --title=Floaterm\ 9 --name=float9
   FloatermNew --title=Floaterm\ 8 --name=float8
@@ -109,6 +110,10 @@ function! s:OnEnter()
   FloatermNew --title=Floaterm\ 6 --name=float6
   FloatermHide
   call feedkeys("\<ESC>")
+  " Flutter
+  if filereadable(fnamemodify(getcwd(), ':p') .. 'pubspec.yaml')
+    call feedkeys(":FlutterTab\<CR>gt")
+  endif
 endfunction
 
 function! s:CloseDir()
