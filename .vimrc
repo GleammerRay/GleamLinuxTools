@@ -7,6 +7,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall
 endif
 
+" Plugs
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
 Plug 'dart-lang/dart-vim-plugin'
@@ -16,8 +17,18 @@ Plug 'preservim/nerdtree'
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 Plug 'preservim/vim-indent-guides'
-Plug 'GGalizzi/cake-vim'
 Plug 'dyng/ctrlsf.vim'
+Plug 'echasnovski/mini.nvim'
+Plug 'echasnovski/mini.animate'
+Plug 'voldikss/vim-floaterm'
+" Themes
+Plug 'GGalizzi/cake-vim' " cake - Gleam's favourite light theme
+Plug 'vim-scripts/billw.vim' " billw - Gleam's favourite dark theme
+Plug 'wolandark/NotePad-Vim' " notepad
+Plug 'morhetz/gruvbox' " gruvbox
+Plug 'slugbyte/lackluster.nvim' " lackluster
+Plug 'nelstrom/vim-blackboard' " blackboard
+Plug 'spf13/vim-colors' " fruity ir_black molokai
 
 call plug#end()
 
@@ -72,41 +83,50 @@ augroup typescript_save | au!
   autocmd BufWritePost *.dart DartFmt
 augroup end
 
-let g:argv0=argv()[0]
+if argc()
+  let g:argv0=argv()[0]
+  let g:argv0IsDir=isdirectory(expand(g:argv0))
+else
+  let g:argv0="null"
+  let g:argv0IsDir=0
+endif
 
+" Default workspace with NERDTree to the left
 function! s:OnEnter()
-  if argc()
-    if isdirectory(g:argv0)
-      execute "NERDTree" g:argv0
-      execute "cd!" g:argv0
-    else
-      let parent=fnamemodify(g:argv0, ':h')
-      execute "NERDTree" parent
-      execute "cd!" parent
-    endif
-    wincmd l
-  "else
-    "let session_file=expand('~/.vim/sessions/' . substitute(getcwd(), '/', '--', 'g') . '.vim')
-    "let session_file=expand('~/.vim/sessions/default.vim')
-    "if filereadable(session_file)
-      "execute "OpenSession!" 'default'
-    "endif
+  if g:argv0IsDir
+    execute "NERDTree" g:argv0
+    execute "cd!" g:argv0
+  else
+    let parent=fnamemodify(g:argv0, ':h')
+    execute "NERDTree" parent
+    execute "cd!" parent
   endif
+  wincmd l
+  FloatermNew --title=Floaterm\ 0 --name=float0
+  FloatermNew --title=Floaterm\ 9 --name=float9
+  FloatermNew --title=Floaterm\ 8 --name=float8
+  FloatermNew --title=Floaterm\ 7 --name=float7
+  FloatermNew --title=Floaterm\ 6 --name=float6
+  FloatermHide
+  call feedkeys("\<ESC>")
 endfunction
 
 function! s:CloseDir()
-  if argc()
-    if isdirectory(expand(g:argv0))
-      bd
-    endif
+  if g:argv0IsDir
+    bd
   endif
 endfunction
 
 autocmd VimEnter * call s:OnEnter()
 autocmd VimEnter * call s:CloseDir()
 autocmd BufWinEnter * NERDTreeMirror
-"autocmd VimLeave *
-"            \   call s:SaveSession()
+
+function! s:OnWqa()
+  execute "wa"
+  execute "qa"
+endfunction
+command GleamWqa call s:OnWqa()
+cnoreabbrev <expr> wqa getcmdtype() == ":" && getcmdline() == 'wqa' ? 'GleamWqa' : 'wqa'
 
 " coc.nvim
 inoremap <silent><expr> <tab> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<TAB>"
@@ -132,3 +152,14 @@ let g:ctrlsf_position = 'right'
 let g:ctrlsf_auto_focus = {
     \ "at": "start"
     \ }
+
+" mini.animate
+" lua require('mini.animate').setup()
+
+" Floaterm
+nmap <C-w>0 :FloatermToggle float0<CR>
+nmap <C-w>9 :FloatermToggle float9<CR>
+nmap <C-w>8 :FloatermToggle float8<CR>
+nmap <C-w>7 :FloatermToggle float7<CR>
+nmap <C-w>6 :FloatermToggle float6<CR>
+tnoremap <C-w> <C-\><C-n>:FloatermHide!<CR>
