@@ -28,9 +28,11 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'echasnovski/mini.nvim'
 Plug 'echasnovski/mini.animate'
 Plug 'voldikss/vim-floaterm'
+" >> Devdocs dependencies
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
+" <<
 Plug 'luckasRanarison/nvim-devdocs'
 " Themes
 Plug 'GGalizzi/cake-vim' " cake - Gleam's favourite light theme
@@ -181,4 +183,13 @@ nmap <C-w>6 :FloatermToggle float6<CR>
 tnoremap <C-w> <C-\><C-n>:FloatermHide!<CR>
 
 " Devdocs
+let g:gleam_devdocs_state = 'hidden'
+function! g:GleamDevdocsSearch()
+  let g:gleam_devdocs_state = 'shown'
+  DevdocsOpenFloat
+endfunction
 lua require('nvim-devdocs').setup()
+nmap <C-f> :call GleamDevdocsSearch()<CR>
+
+" Flutter
+let g:flutter_autoscroll = 1
