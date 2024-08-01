@@ -211,3 +211,38 @@ nmap <C-f> :call GleamDevdocsSearch()<CR>
 
 " Flutter
 let g:flutter_autoscroll = 1
+function! s:GleamFlutter(...)
+  let s:fluttercommand = 'echo "GleamFlutter: No such command"'
+  let s:firstread = 0
+  for s in a:000
+    if s:firstread
+      let s:fluttercommand = s:fluttercommand .. ' ' .. s
+    else
+      if s == 'devices'
+        let s:fluttercommand = 'FlutterDevices'
+      elseif s == 'run'
+        let s:fluttercommand = 'FlutterRun'
+      elseif s == 'split'
+        let s:fluttercommand = 'FlutterSplit'
+      elseif s == 'vsplit'
+        let s:fluttercommand = 'FlutterVSplit'
+      elseif s == 'attach'
+        let s:fluttercommand = 'FlutterAttach'
+      elseif s == 'emulators'
+        let s:fluttercommand = 'FlutterEmulators'
+      elseif s == 'quit'
+        let s:fluttercommand = 'FlutterQuit'
+      elseif s == 'screenshot'
+        let s:fluttercommand = 'FlutterScreenshot'
+      elseif s == 'tab'
+        let s:fluttercommand = 'FlutterTab'
+      elseif s == 'devices'
+        let s:fluttercommand = 'FlutterDevices'
+      endif
+      let s:firstread = 1
+    endif
+  endfor
+  execute s:fluttercommand
+endfunction
+command -nargs=* Flutter call s:GleamFlutter(<f-args>)
+cnoreabbrev <expr> flutter getcmdtype() == ":" && getcmdline() == 'flutter' ? 'Flutter' : 'flutter'
