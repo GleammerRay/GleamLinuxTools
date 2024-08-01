@@ -28,6 +28,7 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'echasnovski/mini.nvim'
 Plug 'echasnovski/mini.animate'
 Plug 'voldikss/vim-floaterm'
+Plug 'tpope/vim-surround'
 " >> Devdocs dependencies
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
@@ -139,12 +140,29 @@ autocmd VimEnter * call s:OnEnter()
 autocmd VimEnter * call s:CloseDir()
 autocmd BufWinEnter * NERDTreeMirror
 
-function! s:OnWqa()
-  execute "wa"
-  execute "qa"
+function! s:OnWqa(bang)
+  FloatermKill!
+  if a:bang
+    execute "wa!"
+    execute "qa!"
+  else
+    execute "wa"
+    execute "qa"
+  endif
 endfunction
-command GleamWqa call s:OnWqa()
+command -bang GleamWqa call s:OnWqa(<bang>0)
 cnoreabbrev <expr> wqa getcmdtype() == ":" && getcmdline() == 'wqa' ? 'GleamWqa' : 'wqa'
+
+function! s:OnQa(bang)
+  FloatermKill!
+  if a:bang
+    execute "qa!"
+  else
+    execute "qa"
+  endif
+endfunction
+command -bang GleamQa call s:OnQa(<bang>0)
+cnoreabbrev <expr> qa getcmdtype() == ":" && getcmdline() == 'qa' ? 'GleamQa' : 'qa'
 
 " coc.nvim
 inoremap <silent><expr> <tab> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<TAB>"
