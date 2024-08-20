@@ -238,6 +238,10 @@ function! s:GleamFlutter(...)
         let s:fluttercommand = 'FlutterTab'
       elseif s == 'devices'
         let s:fluttercommand = 'FlutterDevices'
+      elseif s == 'reload'
+        let s:fluttercommand = 'FlutterHotReload'
+      elseif s == 'restart'
+        let s:fluttercommand = 'FlutterHotRestart'
       endif
       let s:firstread = 1
     endif
