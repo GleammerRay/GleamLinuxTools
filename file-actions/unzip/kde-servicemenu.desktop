@@ -1,0 +1,24 @@
+[Desktop Entry]
+Name=Unzip
+GenericName=Unzip
+Comment=Unzip archives
+Terminal=false
+Type=Service
+Actions=unzip
+MimeType=application/zip
+X-KDE-ServiceTypes=KonqPopupMenu/Plugin
+Keywords=Text;editor;
+Keywords[ckb]=دەق;دەستکاریکەر;
+Keywords[fr]=Texte;éditeur;
+Keywords[ru]=текст;текстовый редактор;
+Keywords[sr]=Текст;едитор;
+Keywords[tr]=Metin;düzenleyici;
+Icon=/usr/share/icons/breeze/mimetypes/16/application-x-archive.svg
+Categories=Utility;TextEditor;
+StartupNotify=false
+
+
+[Desktop Action unzip]
+Name=Unzip
+Icon=/usr/share/icons/breeze/mimetypes/16/application-x-archive.svg
+Exec=unzip %F
