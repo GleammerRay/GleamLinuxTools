@@ -43,6 +43,8 @@ Plug 'morhetz/gruvbox' " gruvbox
 Plug 'slugbyte/lackluster.nvim' " lackluster
 Plug 'nelstrom/vim-blackboard' " blackboard
 Plug 'spf13/vim-colors' " fruity ir_black molokai
+" https://vimcolorschemes.com/earthbound-themes/vim
+Plug 'earthbound-themes/vim' " cave-of-the-past devils-machine dusty-dunes-darker dusty-dunes earthbound-darker earthbound fire-spring-darker fire-spring magicant moonside threed-darker threed
 
 call plug#end()
 
@@ -73,12 +75,14 @@ set shiftwidth=2
 command T execute "tabe"
 nnoremap H gT
 nnoremap L gt
+nmap <silent> <c-h> gT
+nmap <silent> <c-l> gt
 
 " Splits
-nmap <silent> <c-k> :wincmd k<CR>
-nmap <silent> <c-j> :wincmd j<CR>
-nmap <silent> <c-h> :wincmd h<CR>
-nmap <silent> <c-l> :wincmd l<CR>
+nmap <silent> <s-k> :wincmd k<CR>
+nmap <silent> <s-j> :wincmd j<CR>
+nmap <silent> <s-h> :wincmd h<CR>
+nmap <silent> <s-l> :wincmd l<CR>
 
 " Autocomplete
 set wildmode=longest,list,full
@@ -232,6 +236,8 @@ function! s:GleamFlutter(...)
         let s:fluttercommand = 'FlutterEmulators'
       elseif s == 'quit'
         let s:fluttercommand = 'FlutterQuit'
+      elseif s == 'stop'
+        let s:fluttercommand = 'FlutterQuit'
       elseif s == 'screenshot'
         let s:fluttercommand = 'FlutterScreenshot'
       elseif s == 'tab'
@@ -250,3 +256,9 @@ function! s:GleamFlutter(...)
 endfunction
 command -nargs=* Flutter call s:GleamFlutter(<f-args>)
 cnoreabbrev <expr> flutter getcmdtype() == ":" && getcmdline() == 'flutter' ? 'Flutter' : 'flutter'
+
+" CoC
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
+nmap <silent> [j <Plug>(coc-diagnostic-prev)
+nmap <silent> [k <Plug>(coc-diagnostic-next)
