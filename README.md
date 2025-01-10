@@ -58,6 +58,13 @@ https://github.com/GleammerRay/kwin-effects-yet-another-magic-lamp/tree/blur-fix
 
 # Miscellaneous
 
+## Removing root space reserve
+
+Determine your root disk and run (replace `/dev/sda1` with your disk device path):
+```sh
+sudo tune2fs -m 0 /dev/sda1
+```
+
 ## Browser themes
 
 Soft Moon Glow - https://chromewebstore.google.com/detail/soft-moon-glow/akaihbkmkohganaaghamiofkhkgicing
