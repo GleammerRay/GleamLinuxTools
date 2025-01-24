@@ -35,6 +35,7 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
 " <<
 Plug 'luckasRanarison/nvim-devdocs'
+Plug 'pseewald/vim-anyfold' " Cool code folding plugin - use :AnyFoldActivate to enable
 " Themes
 Plug 'GGalizzi/cake-vim' " cake - Gleam's favourite light theme
 Plug 'vim-scripts/billw.vim' " billw - Gleam's favourite dark theme
@@ -262,3 +263,7 @@ cnoreabbrev <expr> flutter getcmdtype() == ":" && getcmdline() == 'flutter' ? 'F
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
 nmap <silent> [j <Plug>(coc-diagnostic-prev)
 nmap <silent> [k <Plug>(coc-diagnostic-next)
+
+" C# style comment folding - use zc to fold and zo to open
+set foldmarker=\#region,\#endregion
+set foldmethod=marker
