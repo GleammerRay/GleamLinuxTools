@@ -39,6 +39,7 @@ Plug 'nvim-treesitter/nvim-treesitter'
 " #endregion
 Plug 'luckasRanarison/nvim-devdocs'
 Plug 'pseewald/vim-anyfold' " Cool code folding plugin - use :AnyFoldActivate to enable
+Plug 'github/copilot.vim'
 " #region Themes
 Plug 'GGalizzi/cake-vim' " cake - Gleam's favourite light theme
 Plug 'vim-scripts/billw.vim' " billw - Gleam's favourite dark theme
