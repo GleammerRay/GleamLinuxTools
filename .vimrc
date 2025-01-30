@@ -1,20 +1,23 @@
 set rnu
 set scrolloff=9999
 
-" Install vim-plug
+" #region Plugins
+
+" #region Install vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall
 endif
+" #endregion
 
-" Automatically install missing plugs
+" #region Automatically install missing plugs
 autocmd VimEnter *
   \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
   \|   PlugInstall --sync | q
   \| endif
+" #endregion
 
-" Plugs
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
 Plug 'dart-lang/dart-vim-plugin'
@@ -29,14 +32,14 @@ Plug 'echasnovski/mini.nvim'
 Plug 'echasnovski/mini.animate'
 Plug 'voldikss/vim-floaterm'
 Plug 'tpope/vim-surround'
-" >> Devdocs dependencies
+" #region Devdocs dependencies
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
-" <<
+" #endregion
 Plug 'luckasRanarison/nvim-devdocs'
 Plug 'pseewald/vim-anyfold' " Cool code folding plugin - use :AnyFoldActivate to enable
-" Themes
+" #region Themes
 Plug 'GGalizzi/cake-vim' " cake - Gleam's favourite light theme
 Plug 'vim-scripts/billw.vim' " billw - Gleam's favourite dark theme
 Plug 'wolandark/NotePad-Vim' " notepad
@@ -46,13 +49,17 @@ Plug 'nelstrom/vim-blackboard' " blackboard
 Plug 'spf13/vim-colors' " fruity ir_black molokai
 " https://vimcolorschemes.com/earthbound-themes/vim
 Plug 'earthbound-themes/vim' " cave-of-the-past devils-machine dusty-dunes-darker dusty-dunes earthbound-darker earthbound fire-spring-darker fire-spring magicant moonside threed-darker threed
+" #endregion
 
 call plug#end()
 
-" Theme
-colorscheme cake
+" #endregion
+
+" #region Theme
+colorscheme devils-machine
 hi MatchParen guifg=#7a8aff guibg=#ededed guisp=#7a8aff gui=NONE ctermfg=12 ctermbg=255 cterm=NONE
 autocmd VimEnter,ColorScheme * hi! link CocFloating CocHintFloat
+" #endregion
 
 let g:lsc_auto_map = {'defaults': v:true, 'Completion': '<tab>'}
 
@@ -64,12 +71,13 @@ map Q gq
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
-" Mouse
+" #region Mouse
 if has('mouse')
   set mouse=a
 endif
+" #endregion
 
-" Tabs
+" #region Tabs
 set expandtab
 set tabstop=2
 set shiftwidth=2
@@ -78,26 +86,31 @@ nnoremap H gT
 nnoremap L gt
 nmap <silent> <c-h> gT
 nmap <silent> <c-l> gt
+" #endregion
 
-" Splits
+" #region Splits
 nmap <silent> <s-k> :wincmd k<CR>
 nmap <silent> <s-j> :wincmd j<CR>
 nmap <silent> <s-h> :wincmd h<CR>
 nmap <silent> <s-l> :wincmd l<CR>
+" #endregion
 
-" Autocomplete
+" #region Autocomplete
 set wildmode=longest,list,full
 set wildmenu
+" #endregion
 
-" Sessions
+" #region Sessions
 function! s:SaveSession()
   "execute "SaveSession!" substitute(getcwd(), '/', '--', 'g')
   execute "SaveSession!" 'default'
 endfunction
 let g:session_autosave='no'
 let g:session_default_to_last=1
+" #endregion
 
-" Autocommands
+" #region Autocommands
+
 augroup typescript_save | au!
   autocmd BufWritePost *.dart DartFmt
 augroup end
@@ -110,7 +123,7 @@ else
   let g:argv0IsDir=0
 endif
 
-" Default workspace with NERDTree to the left
+" #region Default workspace with NERDTree to the left
 function! s:OnEnter()
   if g:argv0IsDir
     execute "NERDTree" g:argv0
@@ -121,19 +134,22 @@ function! s:OnEnter()
     execute "cd!" parent
   endif
   wincmd l
-  " Floaterm
+  " #region Floaterm
   FloatermNew --title=Floaterm\ 0 --name=float0
   FloatermNew --title=Floaterm\ 9 --name=float9
   FloatermNew --title=Floaterm\ 8 --name=float8
   FloatermNew --title=Floaterm\ 7 --name=float7
   FloatermNew --title=Floaterm\ 6 --name=float6
   FloatermHide
+  " #endregion
   call feedkeys("\<ESC>")
-  " Flutter
+  " #region Flutter
   if filereadable(fnamemodify(getcwd(), ':p') .. 'pubspec.yaml')
     call feedkeys(":FlutterTab\<CR>gt")
   endif
+  " #endregion
 endfunction
+" #endregion
 
 function! s:CloseDir()
   if g:argv0IsDir
@@ -144,6 +160,14 @@ endfunction
 autocmd VimEnter * call s:OnEnter()
 autocmd VimEnter * call s:CloseDir()
 autocmd BufWinEnter * NERDTreeMirror
+
+" #region Indent Guides
+let g:indent_guides_enable_on_vim_startup = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black ctermbg=3
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=white ctermbg=4
+" #endregion
+
+" #endregion
 
 function! s:OnWqa(bang)
   FloatermKill!
@@ -169,43 +193,51 @@ endfunction
 command -bang GleamQa call s:OnQa(<bang>0)
 cnoreabbrev <expr> qa getcmdtype() == ":" && getcmdline() == 'qa' ? 'GleamQa' : 'qa'
 
-" coc.nvim
+" #region coc.nvim
+
 inoremap <silent><expr> <tab> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<TAB>"
 inoremap <silent><expr> <cr> "\<c-g>u\<CR>"
 nmap <c-space>  <Plug>(coc-codeaction-cursor)
 
-" Indent Guides
-let g:indent_guides_enable_on_vim_startup = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black ctermbg=3
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=white ctermbg=4
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
+nmap <silent> [j <Plug>(coc-diagnostic-prev)
+nmap <silent> [k <Plug>(coc-diagnostic-next)
 
-" User commands
+" #endregion
+
+" #region User commands
 command PassySendApk execute "! /home/gleam/Desktop/kde-send-passy.sh"
+" #endregion
 
-" Easier escape
+" #region Easier escape
 inoremap jj <ESC>
+" #endregion
 
-" Aliases
+" #region Aliases
 command SaveAll bufdo w 
+" #endregion
 
-" CtrlSF
+" #region CtrlSF
 let g:ctrlsf_position = 'right'
 let g:ctrlsf_auto_focus = {
     \ "at": "start"
     \ }
+" #endregion
 
 " mini.animate
 " lua require('mini.animate').setup()
 
-" Floaterm
+" #region Floaterm
 nmap <C-w>0 :FloatermToggle float0<CR>
 nmap <C-w>9 :FloatermToggle float9<CR>
 nmap <C-w>8 :FloatermToggle float8<CR>
 nmap <C-w>7 :FloatermToggle float7<CR>
 nmap <C-w>6 :FloatermToggle float6<CR>
 tnoremap <C-w> <C-\><C-n>:FloatermHide!<CR>
+" #endregion
 
-" Devdocs
+" #region Devdocs
 let g:gleam_devdocs_state = 'hidden'
 function! g:GleamDevdocsSearch()
   let g:gleam_devdocs_state = 'shown'
@@ -213,8 +245,9 @@ function! g:GleamDevdocsSearch()
 endfunction
 lua require('nvim-devdocs').setup()
 nmap <C-f> :call GleamDevdocsSearch()<CR>
+" #endregion
 
-" Flutter
+" #region Flutter
 let g:flutter_autoscroll = 1
 function! s:GleamFlutter(...)
   let s:fluttercommand = 'echo "GleamFlutter: No such command"'
@@ -257,13 +290,9 @@ function! s:GleamFlutter(...)
 endfunction
 command -nargs=* Flutter call s:GleamFlutter(<f-args>)
 cnoreabbrev <expr> flutter getcmdtype() == ":" && getcmdline() == 'flutter' ? 'Flutter' : 'flutter'
+" #endregion
 
-" CoC
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
-nmap <silent> [j <Plug>(coc-diagnostic-prev)
-nmap <silent> [k <Plug>(coc-diagnostic-next)
-
-" C# style comment folding - use zc to fold and zo to open
+" #region C# style comment folding - use zc to fold, zo to open and zM to fold all
 set foldmarker=\#region,\#endregion
 set foldmethod=marker
+" #endregion
