@@ -86,10 +86,10 @@ elif [ "$1" = 'applet-window-buttons' ]; then
     sudo -u $GLEAM_USER mkdir -p "$GLEAM_TOOLS_LIB"
   fi
   cd "$GLEAM_TOOLS_LIB"
-  sudo -u $GLEAM_USER git clone https://github.com/psifidotos/applet-window-buttons
   if [ -d ./applet-window-buttons ]; then
     rm -rf applet-window-buttons
   fi
+  sudo -u $GLEAM_USER git clone https://github.com/psifidotos/applet-window-buttons
   cd applet-window-buttons
   sudo sh install.sh
 elif [ "$1" = 'kwin-grayscale' ]; then
