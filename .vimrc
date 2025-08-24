@@ -39,7 +39,7 @@ Plug 'nvim-treesitter/nvim-treesitter'
 " #endregion
 Plug 'luckasRanarison/nvim-devdocs'
 Plug 'pseewald/vim-anyfold' " Cool code folding plugin - use :AnyFoldActivate to enable
-Plug 'github/copilot.vim'
+Plug 'Exafunction/windsurf.vim'
 " #region Themes
 Plug 'GGalizzi/cake-vim' " cake - Gleam's favourite light theme
 Plug 'vim-scripts/billw.vim' " billw - Gleam's favourite dark theme
@@ -50,6 +50,8 @@ Plug 'nelstrom/vim-blackboard' " blackboard
 Plug 'spf13/vim-colors' " fruity ir_black molokai
 " https://vimcolorschemes.com/earthbound-themes/vim
 Plug 'earthbound-themes/vim' " cave-of-the-past devils-machine dusty-dunes-darker dusty-dunes earthbound-darker earthbound fire-spring-darker fire-spring magicant moonside threed-darker threed
+Plug 'timmyha/visitant.vim' " visitant
+Plug 'google/vim-colorscheme-primary' " primary - background=light & background=dark
 " #endregion
 
 call plug#end()
@@ -57,13 +59,21 @@ call plug#end()
 " #endregion
 
 " #region Theme
-colorscheme devils-machine
-hi MatchParen guifg=#7a8aff guibg=#ededed guisp=#7a8aff gui=NONE ctermfg=12 ctermbg=255 cterm=NONE
+let g:colors_name='primary'
+set t_Co=256
+set background=light
+"hi MatchParen guifg=#7a8aff guibg=#ededed guisp=#7a8aff gui=NONE ctermfg=12 ctermbg=255 cterm=NONE
 autocmd VimEnter,ColorScheme * hi! link CocFloating CocHintFloat
+" #endregion
+
+" #region Syntax highlighting
+syntax on
+"let g:NERDTreeNodeDelimiter = "\u00a0"
 " #endregion
 
 let g:lsc_auto_map = {'defaults': v:true, 'Completion': '<tab>'}
 
+" #region Fixes
 " Don't use Ex mode, use Q for formatting
 " Revert with ":unmap Q".
 map Q gq
@@ -71,6 +81,7 @@ map Q gq
 " CTRL-U in insert mode deletes a lot. Use CTRL-G to first break undo.
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
+" #endregion
 
 " #region Mouse
 if has('mouse')
@@ -126,6 +137,7 @@ endif
 
 " #region Default workspace with NERDTree to the left
 function! s:OnEnter()
+  execute "colorscheme" g:colors_name
   if g:argv0IsDir
     execute "NERDTree" g:argv0
     execute "cd!" g:argv0
