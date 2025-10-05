@@ -1,3 +1,6 @@
+" Gleammer's Neovim configuration
+" Save to .vimrc (and source it in .config/nvim/init.vim) or directly to .config/nvim/init.vim
+
 set rnu
 set scrolloff=9999
 
@@ -40,6 +43,7 @@ Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'luckasRanarison/nvim-devdocs'
 Plug 'pseewald/vim-anyfold' " Cool code folding plugin - use :AnyFoldActivate to enable
 Plug 'Exafunction/windsurf.vim'
+Plug 'vim-scripts/DrawIt'
 " #region Themes
 Plug 'GGalizzi/cake-vim' " cake - Gleam's favourite light theme
 Plug 'vim-scripts/billw.vim' " billw - Gleam's favourite dark theme
