@@ -1,5 +1,35 @@
-" Gleammer's Neovim configuration
-" Save to .vimrc (and source it in .config/nvim/init.vim) or directly to .config/nvim/init.vim
+" # Gleammer's Neovim configuration
+
+" ## Installation
+" 1. Install Neovim on your system.
+" 2. Save this file directly to .config/nvim/init.vim (or to .vimrc and source it in .config/nvim/init.vim).
+" 3. Open Neovim, wait for the vim-plug plugin manager to download, then restart Neovim.
+" 4. Wait for vim-plug to update all the plugins, then restart Neovim.
+" 5. Run :CocUpdate and restart Neovim again to enable VSCode extensions.
+" 6. Pick a theme from /Themes and set it in /Theme.
+" 7. Enjoy!
+
+" ## Usage
+" This config keeps most things close to default Vim settings with a tilt
+" towards the VSCode experience.
+"
+" Quirks:
+" - NERDTree panel on the left to mirror the VSCode folder view.
+" - Shift + Direction moves the cursor between panels.
+" - Ctrl + Direction moves the cursor between windows.
+" - C# style comment folding - region tags create code folds across all languages,
+"   zo to open, zc to collapse. Check this file for the fold patterns.
+" - The Windsurf plugin provides AI-powered autocompletion.
+"
+" Tools:
+" - Use :CocInstall coc-*language* to install VSCode extensions.
+" - :CtrlSF command provides VSCode-like searches across the entire project.
+" - Ctrl + W + number 6 through 0 opens a terminal window (5 terminals available).
+" - DrawIt lets you draw text diagrams - :DIstart to start, :DIstop to stop,
+"   direction keys to move, /, \ and arrow keys to draw lines, <, ^, > and
+"   letter v to draw arrows.
+" - Use :TransparentEnable to make Neovim background transparent.
+
 
 set rnu
 set scrolloff=9999
@@ -57,6 +87,7 @@ Plug 'earthbound-themes/vim' " cave-of-the-past devils-machine dusty-dunes-darke
 Plug 'timmyha/visitant.vim' " visitant
 Plug 'google/vim-colorscheme-primary' " primary - background=light & background=dark
 " #endregion
+Plug 'xiyaowong/transparent.nvim'
 
 call plug#end()
 
