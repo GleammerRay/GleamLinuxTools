@@ -1,7 +1,7 @@
 " # Gleammer's Neovim configuration
 
 " ## Installation
-" 1. Install Neovim on your system.
+" 1. Install Node (node) and Neovim (nvim) on your system.
 " 2. Save this file directly to .config/nvim/init.vim (or to .vimrc and source it in .config/nvim/init.vim).
 " 3. Open Neovim, wait for the vim-plug plugin manager to download, then restart Neovim.
 " 4. Wait for vim-plug to update all the plugins, then restart Neovim.
